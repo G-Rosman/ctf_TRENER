@@ -43,11 +43,11 @@ def all_ctf(session): #Функция для получения всех стф�
 
         'link': ad2 + str(BeautifulSoup(str(ctf_html[0]),'lxml').a.get('href')), 
 
-        'begin_date': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[0].split(', ')[0], 
+        'begin_date': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[0].split(', ')[0][:6], 
 
         'begin_time': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[0].split(', ')[1], 
 
-        'end_date': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[1].split(', ')[0], 
+        'end_date': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[1].split(', ')[0][:-4][:6], 
 
         'end_time': str(BeautifulSoup(str(ctf_html[1]), 'lxml').text).split(' — ')[1].split(', ')[1],
 
@@ -58,6 +58,8 @@ def all_ctf(session): #Функция для получения всех стф�
       ctfs.append(ctf)
 
     for ctf in ctfs:
-        new_ctf = CTF(**ctf)
-        session.add(new_ctf)
+        existing_ctf = session.query(CTF).filter_by(name=ctf['name'], begin_date=ctf['begin_date']).first()
+        if existing_ctf is None:
+            new_ctf = CTF(**ctf)
+            session.add(new_ctf)
     session.commit()

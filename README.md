@@ -6,14 +6,15 @@ CTF Trainer - это веб-приложение, которое позволя�
 
 ### Бэкенд
 
-1. Убедитесь, что у вас установлены Python и pip.
-2. Перейдите в директорию бэкенда:
 
-```cd ./back```
-
-4. Запустите сервер FastAPI:
-
-```uvicorn start:app --reload```
+```
+cd back
+sudo apt install python3-venv
+python3 -m venv env
+source ./env/bin/activate
+pip install -r requirements.txt
+uvicorn start:app --reload
+```
 
 
 ### Фронтенд

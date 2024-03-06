@@ -8,7 +8,7 @@
  <script>
  import TodayEvents from './components/TodayEvents.vue';
  import TomorrowEvents from './components/TomorrowEvents.vue';
- 
+
  export default {
   name: 'App',
   components: {
@@ -26,17 +26,20 @@
   },
   methods: {
      async fetchEvents() {
-       try {
-         const Response = await fetch('http://localhost:8000/events');
-         const Events = await Response.json();
-         this.Events = Events;
+      try {
+        const todayResponse = await fetch('http://localhost:8000/today');
+        const todayEvents = await todayResponse.json();
+        this.todayEvents = todayEvents;
 
-       } catch (error) {
-         console.error('Ошибка при получении данных:', error);
-       }
-     }
+        const tomorrowResponse = await fetch('http://localhost:8000/tomorrow');
+        const tomorrowEvents = await tomorrowResponse.json();
+        this.tomorrowEvents = tomorrowEvents;
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
   }
- }
+  }}
+
  </script>
 
 <style>
