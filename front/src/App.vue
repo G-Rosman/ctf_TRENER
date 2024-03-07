@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-     <TodayEvents :events="todayEvents" />
-     <TomorrowEvents :events="tomorrowEvents" />
+     <TodayEvents class="events-component" :events="todayEvents" />
+     <TomorrowEvents class="events-component" :events="tomorrowEvents" />
   </div>
  </template>
  
@@ -50,5 +50,26 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body::before {
+ content: "";
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background-image: url('@/assets/background.jpg');
+ background-size: cover;
+ background-position: center;
+ opacity: 0.5;
+ z-index: -1;
+}
+.events-component {
+  transition: opacity 0.3s ease;
+  opacity: 0.5;
+}
+
+.events-component:hover {
+ opacity: 0.9; 
 }
 </style>

@@ -11,6 +11,18 @@ def init(): #Инициализация перменных
   ctfs_html = soup.select('tr:not(:first-of-type)')
   return ad, ad2, ctfs_html
 
+
+def parse_links_from_page(url):
+    response = get(url,headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.4; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36'})
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        links = soup.find_all('a')
+        links_list = [link.get('href') for link in links if link.get('href') is not None]
+        return links_list[24]
+    else:
+        print(f"Ошибка при получении страницы: {response.status_code}")
+        return []
+
 def place_insert(place): #Функция для подстановки места в словарь стф
   if place != '' and place[len(place)-1] != '\n' and place[0] != '\n':
     return place
@@ -61,5 +73,6 @@ def all_ctf(session): #Функция для получения всех стф�
         existing_ctf = session.query(CTF).filter_by(name=ctf['name'], begin_date=ctf['begin_date']).first()
         if existing_ctf is None:
             new_ctf = CTF(**ctf)
+            new_ctf.link = parse_links_from_page(new_ctf.link)
             session.add(new_ctf)
     session.commit()
